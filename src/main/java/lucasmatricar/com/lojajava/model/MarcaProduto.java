@@ -3,6 +3,7 @@ package lucasmatricar.com.lojajava.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "marca_produto")
@@ -27,5 +28,18 @@ public class MarcaProduto implements Serializable {
 
     public String getNomeDesc() {
         return nomeDesc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MarcaProduto that = (MarcaProduto) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
