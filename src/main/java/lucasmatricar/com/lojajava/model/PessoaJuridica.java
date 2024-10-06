@@ -1,5 +1,6 @@
 package lucasmatricar.com.lojajava.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -9,12 +10,16 @@ public class PessoaJuridica extends Pessoa{
 
     private static final long serialVersionUID = 1L;
 
+    @Column(nullable = false)
     private String cnpj;
 
+    @Column(nullable = false)
     private String inscricaoEstadual;
 
+    @Column(nullable = false)
     private String razaoSocial;
 
+    @Column(nullable = false)
     private String nomeFantasia;
 
     private String inscricaoMunicipal;

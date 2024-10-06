@@ -33,6 +33,7 @@ public class VendaCompraLojaVirtual implements Serializable {
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "endereco_cobranca_fk"))
     private Endereco enderecoCobranca;
 
+    @Column(nullable = false)
     private BigDecimal valorTotal;
 
     private BigDecimal valorDesconto;
@@ -52,13 +53,17 @@ public class VendaCompraLojaVirtual implements Serializable {
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "cupom_desconto_fk"))
     private CupomDesconto cupomDesconto;
 
+    @Column(nullable = false)
     private BigDecimal valorFrete;
 
-    private Integer diasEntrega;
+    @Column(nullable = false)
+    private Integer diaEntrega;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dataVenda;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dataEntrega;
 
@@ -142,12 +147,12 @@ public class VendaCompraLojaVirtual implements Serializable {
         this.valorFrete = valorFrete;
     }
 
-    public Integer getDiasEntrega() {
-        return diasEntrega;
+    public Integer getDiaEntrega() {
+        return diaEntrega;
     }
 
-    public void setDiasEntrega(Integer diasEntrega) {
-        this.diasEntrega = diasEntrega;
+    public void setDiaEntrega(Integer diaEntrega) {
+        this.diaEntrega = diaEntrega;
     }
 
     public Date getDataVenda() {

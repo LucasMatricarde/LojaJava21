@@ -16,10 +16,10 @@ public class ImagemProduto implements Serializable {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.SEQUENCE, generator = "seq_imagem_produto")
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String imagemOriginal;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String imagemMiniatura;
 
     @ManyToOne
