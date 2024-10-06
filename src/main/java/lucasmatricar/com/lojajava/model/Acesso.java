@@ -20,6 +20,10 @@ public class Acesso implements GrantedAuthority {
         this.descricao = descricao;
     }
 
+    public Acesso() {
+
+    }
+
     @Override
     public String getAuthority() {
         return this.descricao;
