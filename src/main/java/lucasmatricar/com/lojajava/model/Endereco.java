@@ -1,6 +1,7 @@
 package lucasmatricar.com.lojajava.model;
 
 import jakarta.persistence.*;
+import lucasmatricar.com.lojajava.enums.TipoEndereco;
 
 import java.io.Serializable;
 
@@ -32,6 +33,18 @@ public class Endereco implements Serializable {
     @ManyToOne(targetEntity = Pessoa.class)
     @JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "fk_endereco_pessoa"))
     private Pessoa pessoa;
+
+    @Enumerated(EnumType.STRING)
+    private TipoEndereco tipoEndereco;
+
+
+    public TipoEndereco getTipoEndereco() {
+        return tipoEndereco;
+    }
+
+    public void setTipoEndereco(TipoEndereco tipoEndereco) {
+        this.tipoEndereco = tipoEndereco;
+    }
 
     public Long getId() {
         return id;
