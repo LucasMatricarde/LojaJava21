@@ -2,8 +2,14 @@ package lucasmatricar.com.lojajava;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"lucasmatricar.*"})
+@EnableJpaRepositories(basePackages = {"lucasmatricar.com.lojajava.repository"})
+@EnableTransactionManagement
 public class LojaJavaApplication {
 
 	public static void main(String[] args) {
