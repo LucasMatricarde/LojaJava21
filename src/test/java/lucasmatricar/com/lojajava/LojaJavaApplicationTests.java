@@ -1,5 +1,7 @@
 package lucasmatricar.com.lojajava;
 
+import junit.framework.TestCase;
+import lucasmatricar.com.lojajava.controller.AcessoController;
 import lucasmatricar.com.lojajava.model.Acesso;
 import lucasmatricar.com.lojajava.repository.AcessoRepository;
 import lucasmatricar.com.lojajava.service.AcessoService;
@@ -8,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = LojaJavaApplication.class)
-public class LojaJavaApplicationTests {
+public class LojaJavaApplicationTests extends TestCase {
 
 	@Autowired
-	private AcessoService acessoService;
+	private AcessoController acessoController;
 
 	@Test
 	public void testeCadastraAcesso() {
@@ -19,7 +21,8 @@ public class LojaJavaApplicationTests {
 
 		acesso.setDescricao("ROLE_ADMIN");
 
-		acessoService.save(acesso);
-	}
+		acesso = acessoController.saveAcesso(acesso).getBody();
 
+        assertTrue(acesso.getId() > 0);
+	}
 }
