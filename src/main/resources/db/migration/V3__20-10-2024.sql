@@ -1,0 +1,1 @@
+ALTER TABLE pessoa_fisica ADD COLUMN tipo_pessoa CHARACTER VARYING(255);
