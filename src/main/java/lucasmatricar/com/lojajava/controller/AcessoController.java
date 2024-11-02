@@ -1,6 +1,5 @@
 package lucasmatricar.com.lojajava.controller;
 
-import jakarta.websocket.server.PathParam;
 import lucasmatricar.com.lojajava.model.Acesso;
 import lucasmatricar.com.lojajava.repository.AcessoRepository;
 import lucasmatricar.com.lojajava.service.AcessoService;
