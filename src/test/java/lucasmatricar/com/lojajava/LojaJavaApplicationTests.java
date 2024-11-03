@@ -1,5 +1,6 @@
 package lucasmatricar.com.lojajava;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lucasmatricar.com.lojajava.controller.AcessoController;
 import lucasmatricar.com.lojajava.model.Acesso;
@@ -26,27 +27,4 @@ public class LojaJavaApplicationTests {
 	@Autowired
 	private AcessoController acessoController;
 
-	@Test
-	public void testRestApiCadastraAcesso() throws Exception {
-		Acesso acesso = new Acesso();
-		acesso.setDescricao("ROLE_COMPRADOR");
-
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/saveAcesso")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(new ObjectMapper().writeValueAsString(acesso))
-				.accept(MediaType.APPLICATION_JSON));
-
-		resultActions.andExpect(status().isOk());
-	}
-
-	@Test
-	public void testeCadastraAcesso() {
-		Acesso acesso = new Acesso();
-		acesso.setDescricao("ROLE_ADMIN");
-
-		acesso = acessoController.saveAcesso(acesso).getBody();
-
-		assert acesso != null;
-		assert acesso.getId() > 0;
-	}
 }

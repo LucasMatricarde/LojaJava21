@@ -1,7 +1,9 @@
 package lucasmatricar.com.lojajava.security;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lucasmatricar.com.lojajava.ApplicationContextLoad;
@@ -12,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.security.Key;
 import java.util.Date;
 
 @Service
@@ -21,27 +23,23 @@ public class JWTTokenAutenticacaoService {
 
     private static final long EXPIRATION_TIME = 86400000;
 
-    private static final String SECRET_KEY = "adsdssad=asdsa--sadaca-1";
+    // Gere uma chave segura usando Keys.secretKeyFor
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     private static final String TOKEN_PREFIX = "Bearer ";
-
     private static final String HEADER_STRING = "Authorization";
 
-    /*Gera o token e da a resposta para o cliente o com JWT*/
     public void addAuthorization(HttpServletResponse response, String username) throws Exception {
-        /*Montagem do token*/
-        String jwt = Jwts.builder().setSubject(username)/*adiciona o Usuário*/
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))/*Tempo de expiração do token*/
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
+        String jwt = Jwts.builder()
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS512)
+                .compact();
 
-        String token = TOKEN_PREFIX + " " + jwt ;
+        String token = TOKEN_PREFIX + jwt;
 
-        /*Adiciona o token no header do response*/
         response.addHeader(HEADER_STRING, token);
-
         liberacaoCors(response);
-
-        /*Usado para testar o token*/
         response.getWriter().write("{\"Authorization\":\"" + token + "\"}");
     }
 
@@ -50,17 +48,31 @@ public class JWTTokenAutenticacaoService {
 
         if(token != null) {
             String cleanToken = token.replace(TOKEN_PREFIX, "").trim();
-            String user = Jwts.parser()
-                    .setSigningKey(SECRET_KEY).build()
-                    .parseClaimsJws(cleanToken)
-                    .getBody().getSubject();
 
-            if(user != null) {
-                Usuario usuario = ApplicationContextLoad.getApplicationContext().getBean(UsuarioRepository.class).findByLogin(user);
+            try {
+                String user = Jwts.parser()
+                        .setSigningKey(SECRET_KEY)
+                        .build()
+                        .parseClaimsJws(cleanToken)
+                        .getBody()
+                        .getSubject();
 
-                if(usuario != null) {
-                    return new UsernamePasswordAuthenticationToken(usuario.getLogin(), usuario.getSenha(), usuario.getAuthorities());
+                if(user != null) {
+                    Usuario usuario = ApplicationContextLoad.getApplicationContext()
+                            .getBean(UsuarioRepository.class)
+                            .findByLogin(user);
+
+                    if(usuario != null) {
+                        return new UsernamePasswordAuthenticationToken(
+                                usuario.getLogin(),
+                                usuario.getSenha(),
+                                usuario.getAuthorities()
+                        );
+                    }
                 }
+            } catch (JwtException e) {
+                // Log do erro e tratamento adequado
+                return null;
             }
         }
 

@@ -11,15 +11,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @ComponentScan(basePackages = {"lucasmatricar.*"})
 @EnableJpaRepositories(basePackages = {"lucasmatricar.com.lojajava.repository"})
-@EntityScan(basePackages = "lucasmatricar.com.lojajava.model")
+@EntityScan(basePackages = {"lucasmatricar.com.lojajava.model"})
 @EnableTransactionManagement
 public class LojaJavaApplication {
 
 	public static void main(String[] args) {
 
 		System.out.println(new BCryptPasswordEncoder().encode("matricar"));
-
-		System.out.println("teste");
 
 		SpringApplication.run(LojaJavaApplication.class, args);
 	}
